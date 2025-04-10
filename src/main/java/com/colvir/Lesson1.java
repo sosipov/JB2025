@@ -3,6 +3,8 @@ package com.colvir;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -26,12 +28,13 @@ import java.util.stream.Collectors;
 public class Lesson1 {
 
     public static void main(String[] args) {
-        String s = "Семь раз отмерь, 1 раз отрежь!";
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
 
         Arrays.stream(s.split("[^a-zA-zА-Яа-я0-9]+"))
                 .map(String::toLowerCase)
-                .collect(Collectors.groupingBy(a -> a, LinkedHashMap::new, Collectors.counting()))
-                .entrySet().stream().sorted((o1, o2) -> Long.compare(o2.getValue(), o1.getValue()))
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed())
                 .map(Map.Entry::getKey).forEach(System.out::println);
     }
 }
